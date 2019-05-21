@@ -916,7 +916,43 @@ class WC_Admin_Setup_Wizard {
 		<?php if ( $intro_text ) : ?>
 			<p><?php echo wp_kses_post( $intro_text ); ?></p>
 		<?php endif; ?>
-		<form method="post">
+<form method="post">
+		<?php if ( $is_wcs_labels_supported || $is_shipstation_supported ) : ?>
+			<ul class="wc-setup-shipping-recommended">
+			<?php
+			if ( $is_wcs_labels_supported ) :
+				$this->display_recommended_item(
+					array(
+						'type'        => 'woocommerce_services',
+						'title'       => __( 'Did you know you can print shipping labels at home?', 'woocommerce' ),
+						'description' => __( 'With WooCommerce Shipping powered by WooCommerce Services & Jetpack you can save time at the Post Office by enabling you to print labels at home.', 'woocommerce' ),
+						'img_url'     => WC()->plugin_url() . '/assets/images/obw-woocommerce-services-icon.png',
+						'img_alt'     => __( 'WooCommerce Services icon', 'woocommerce' ),
+						'plugins'     => $this->get_wcs_requisite_plugins(),
+					)
+				);
+			elseif ( $is_shipstation_supported ) :
+				$this->display_recommended_item(
+					array(
+						'type'        => 'shipstation',
+						'title'       => __( 'Print shipping labels at home', 'woocommerce' ),
+						'description' => __( 'We recommend using ShipStation to save time at the Post Office by printing your shipping labels at home. Try ShipStation free for 30 days.', 'woocommerce' ),
+						'img_url'     => WC()->plugin_url() . '/assets/images/obw-shipstation-icon.png',
+						'img_alt'     => __( 'ShipStation icon', 'woocommerce' ),
+						'plugins'     => array(
+							array(
+								'name' => __( 'ShipStation', 'woocommerce' ),
+								'slug' => 'woocommerce-shipstation-integration',
+							),
+						),
+					)
+				);
+			endif;
+		endif;
+		?>
+			</ul>
+
+
 			<?php if ( empty( $existing_zones ) ) : ?>
 				<ul class="wc-wizard-services shipping">
 					<li class="wc-wizard-service-item">
@@ -982,40 +1018,7 @@ class WC_Admin_Setup_Wizard {
 				</ul>
 			<?php endif; ?>
 
-		<?php if ( $is_wcs_labels_supported || $is_shipstation_supported ) : ?>
-			<ul class="wc-setup-shipping-recommended">
-			<?php
-			if ( $is_wcs_labels_supported ) :
-				$this->display_recommended_item(
-					array(
-						'type'        => 'woocommerce_services',
-						'title'       => __( 'Print shipping labels at home', 'woocommerce' ),
-						'description' => __( 'We recommend WooCommerce Services & Jetpack. These plugins will save you time at the Post Office by enabling you to print your shipping labels at home.', 'woocommerce' ),
-						'img_url'     => WC()->plugin_url() . '/assets/images/obw-woocommerce-services-icon.png',
-						'img_alt'     => __( 'WooCommerce Services icon', 'woocommerce' ),
-						'plugins'     => $this->get_wcs_requisite_plugins(),
-					)
-				);
-			elseif ( $is_shipstation_supported ) :
-				$this->display_recommended_item(
-					array(
-						'type'        => 'shipstation',
-						'title'       => __( 'Print shipping labels at home', 'woocommerce' ),
-						'description' => __( 'We recommend using ShipStation to save time at the Post Office by printing your shipping labels at home. Try ShipStation free for 30 days.', 'woocommerce' ),
-						'img_url'     => WC()->plugin_url() . '/assets/images/obw-shipstation-icon.png',
-						'img_alt'     => __( 'ShipStation icon', 'woocommerce' ),
-						'plugins'     => array(
-							array(
-								'name' => __( 'ShipStation', 'woocommerce' ),
-								'slug' => 'woocommerce-shipstation-integration',
-							),
-						),
-					)
-				);
-			endif;
-		endif;
-		?>
-			</ul>
+
 
 			<div class="wc-setup-shipping-units">
 				<p>
